@@ -55,8 +55,9 @@ export const getStaticProps: GetStaticProps = async () => {
 
   data.forEach((customer) => {
     if (customer.orders) {
-      customer.orders.forEach((order) => {});
-      console.log(orders);
+      customer.orders.forEach((order) => {
+        console.log(order);
+      });
     }
   });
 
