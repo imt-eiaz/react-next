@@ -48,34 +48,32 @@ const rows = [
   { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
 ];
 
-
-
 export const getStaticProps: GetStaticProps = async () => {
-    const data = await getCustomers();
-    
-    let orders: any = [];
-    
-data.forEach((customer) => {
+  const data = await getCustomers();
+
+  let orders: any = [];
+
+  data.forEach((customer) => {
     if (customer.orders) {
-        customer.orders.forEach((order) => {})
-        console.log(orders)
+      customer.orders.forEach((order) => {});
+      console.log(orders);
     }
-    
-})
-    
+  });
+
   return {
     props: {
       orders: orders,
-    //     .map((customer) => {
-    //       return customer.orders || null;
-    //     })
-    //     .flat(1)
-    //     .filter((order) => {
-    //       return order != null; 
-    //     }),
-    // },
-    revalidate: 60,
-  }
+      //     .map((customer) => {
+      //       return customer.orders || null;
+      //     })
+      //     .flat(1)
+      //     .filter((order) => {
+      //       return order != null;
+      //     }),
+      // },
+      revalidate: 60,
+    },
+  };
 };
 
 const Orders: NextPage = (props) => {
@@ -93,4 +91,4 @@ const Orders: NextPage = (props) => {
   );
 };
 
-export default Orders
+export default Orders;
