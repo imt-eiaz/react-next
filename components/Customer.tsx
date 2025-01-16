@@ -8,7 +8,7 @@ import type { Customer } from "../pages/customers";
 import Grid from "@mui/material/Grid";
 import Link from "next/link";
 
-const Customer = ({ customer }: { customer: Customer }) => {
+const CustomerComponent = ({ customer }: { customer: Customer }) => {
   return (
     <Grid item>
       <span
@@ -38,4 +38,4 @@ const Customer = ({ customer }: { customer: Customer }) => {
   );
 };
 
-export default Customer;
+export default CustomerComponent;
