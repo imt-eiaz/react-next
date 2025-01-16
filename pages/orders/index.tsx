@@ -7,28 +7,22 @@ import { getCustomers } from "../api/customers";
 const columns: GridColDef<(typeof rows)[number]>[] = [
   { field: "id", headerName: "ID", width: 90 },
   {
-    field: "firstName",
-    headerName: "First name",
+    field: "customer",
+    headerName: "Customer",
     width: 150,
     editable: true,
   },
   {
-    field: "lastName",
-    headerName: "Last name",
-    width: 150,
-    editable: true,
-  },
-  {
-    field: "age",
-    headerName: "Age",
-    type: "number",
+    field: "description",
+    headerName: "Description",
+    type: "string",
     width: 110,
     editable: true,
   },
   {
-    field: "fullName",
-    headerName: "Full name",
-    description: "This column has a value getter and is not sortable.",
+    field: "price",
+    headerName: "Price",
+    type: "number",
     sortable: false,
     width: 160,
     valueGetter: (params: GridValueGetterParams) =>
@@ -51,38 +45,43 @@ const rows = [
 export const getStaticProps: GetStaticProps = async () => {
   const data = await getCustomers();
 
-  let orders: any = [];
+  // let orders: any = [];
 
-  data.forEach((customer) => {
-    if (customer.orders) {
-      customer.orders.forEach((order) => {
-        console.log(order);
-      });
-    }
-  });
+  // data.forEach((customer) => {
+  //   if (customer.orders) {
+  //     customer.orders.forEach((order) => {
+  //       console.log(order);
+  //     });
+  //   }
+  // });
 
   return {
     props: {
-      orders: orders,
-      //     .map((customer) => {
-      //       return customer.orders || null;
-      //     })
-      //     .flat(1)
-      //     .filter((order) => {
-      //       return order != null;
-      //     }),
-      // },
-      revalidate: 60,
+      orders: data
+        .map((customer) => {
+          return (
+            customer.orders?.push({
+              ...order,
+              customer: customer.name,
+              id: order._id,
+            }) || null
+          );
+        })
+        .flat(1)
+        .filter((order) => {
+          return order != null;
+        }),
     },
+    revalidate: 60,
   };
 };
 
-const Orders: NextPage = (props) => {
+const Orders: NextPage = (props: any) => {
   console.log(props);
   return (
     <Box sx={{ height: 400, width: "100%" }}>
       <DataGrid
-        rows={rows}
+        rows={props.orders}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
