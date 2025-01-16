@@ -25,8 +25,6 @@ const columns: GridColDef<(typeof rows)[number]>[] = [
     type: "number",
     sortable: false,
     width: 160,
-    valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.firstName || ""} ${params.row.lastName || ""}`,
   },
 ];
 
@@ -45,32 +43,26 @@ const rows = [
 export const getStaticProps: GetStaticProps = async () => {
   const data = await getCustomers();
 
-  // let orders: any = [];
+  let orders: any = [];
 
-  // data.forEach((customer) => {
-  //   if (customer.orders) {
-  //     customer.orders.forEach((order) => {
-  //       console.log(order);
-  //     });
-  //   }
-  // });
+  data.forEach((customer) => {
+    if (customer.orders) {
+      customer.orders.forEach((order) => {
+        orders.push({ ...order, customer: customer.name, id: order._id });
+      });
+    }
+  });
 
   return {
     props: {
-      orders: data
-        .map((customer) => {
-          return (
-            customer.orders?.push({
-              ...order,
-              customer: customer.name,
-              id: order._id,
-            }) || null
-          );
-        })
-        .flat(1)
-        .filter((order) => {
-          return order != null;
-        }),
+      orders: orders,
+      // .map((customer) => {
+      //   return customer.orders || null;
+      // })
+      // .flat(1)
+      // .filter((order) => {
+      //   return order !== null;
+      // }),
     },
     revalidate: 60,
   };
