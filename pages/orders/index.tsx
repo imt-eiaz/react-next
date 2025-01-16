@@ -5,18 +5,18 @@ import { GetStaticProps, NextPage } from "next/types";
 import { getCustomers } from "../api/customers";
 
 const columns: GridColDef<(typeof rows)[number]>[] = [
-  { field: "id", headerName: "ID", width: 90 },
+  { field: "id", headerName: "ID", width: 300 },
   {
     field: "customer",
     headerName: "Customer",
-    width: 150,
+    width: 200,
     editable: true,
   },
   {
     field: "description",
     headerName: "Description",
     type: "string",
-    width: 110,
+    width: 220,
     editable: true,
   },
   {
@@ -48,7 +48,12 @@ export const getStaticProps: GetStaticProps = async () => {
   data.forEach((customer) => {
     if (customer.orders) {
       customer.orders.forEach((order) => {
-        orders.push({ ...order, customer: customer.name, id: order._id });
+        orders.push({
+          ...order,
+          customer: customer.name,
+          id: order._id,
+          price: order.price.$numberDecimal,
+        });
       });
     }
   });
@@ -56,13 +61,6 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       orders: orders,
-      // .map((customer) => {
-      //   return customer.orders || null;
-      // })
-      // .flat(1)
-      // .filter((order) => {
-      //   return order !== null;
-      // }),
     },
     revalidate: 60,
   };
